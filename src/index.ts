@@ -14,16 +14,15 @@ export = (app: Application) => {
         labels: ['need_check']
       })
 
-      // 作成されたPull Requestにラベル追加
       await context.github.issues.addLabels(params)
+      
     }
   })
 
   app.on('issues.labeled', async(context : any) => {
-    // ラベルの文字列で条件分岐
-    const isBug = context.payload.issue.labels.some((label: any) => { return label.name === 'bug' })
+
+    const isBug = context.payload.issue.labels.some((label: any) => { return label.name === 'need_check' })
     
-    //Bugならコメントつける
     if(isBug){
       const params = context.issue({
         body : 'Please look back this bug!!\nhttps://docs.google.com/forms/d/e/1FAIpQLSdufxjUrGALB-aBinIiWBYRS2KVNazSCKNK1JweVCQV3itGuw/viewform'
